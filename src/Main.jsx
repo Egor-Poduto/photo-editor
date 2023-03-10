@@ -10,17 +10,17 @@ const Main = () => {
             maxValue: 200
         },
         {
-            name: 'saturate',
+            name: 'contrast',
             maxValue: 200
         },
         {
-            name: 'contrast',
+            name: 'saturation',
             maxValue: 200
         },
         {
         name: 'sepia',
         maxValue: 200
-        }
+        },
     ]
     const [property, setProperty] = useState(
         {
@@ -34,7 +34,7 @@ const Main = () => {
         image: '',
         brightness: 100,
         sepia: 0,
-        saturate: 100,
+        saturation: 100,
         contrast: 100,
     })
     const inputHandle = (e) => {
@@ -89,7 +89,7 @@ const Main = () => {
         canvas.width = details.naturalWidth
         canvas.height = details.naturalHeight
         const ctx = canvas.getContext('2d')
-        ctx.filter = `brightness(${state.brightness}%) sepia(${state.sepia}%) saturate(${state.saturate}%) contrast(${state.contrast}%)`
+        ctx.filter = `brightness(${state.brightness}%) sepia(${state.sepia}%) saturate(${state.saturation}%) contrast(${state.contrast}%)`
         ctx.translate(canvas.width / 2, canvas.height / 2)
         ctx.scale(state.vartical, state.horizental)
         ctx.drawImage(
@@ -138,7 +138,7 @@ const Main = () => {
                         <div className="image">
                             {
                                 state.image ? <ReactCrop crop={crop} onChange={c => setCrop(c)}>
-                                    <img onLoad={(e) => setDetails(e.currentTarget)} style={{ filter: `brightness(${state.brightness}%) sepia(${state.sepia}%) saturate(${state.saturate}%) contrast(${state.contrast}%)` }} src={state.image} alt="" />
+                                    <img onLoad={(e) => setDetails(e.currentTarget)} style={{ filter: `brightness(${state.brightness}%) sepia(${state.sepia}%) saturate(${state.saturation}%) contrast(${state.contrast}%)` }} src={state.image} alt="" />
                                 </ReactCrop> :
                                     <label htmlFor="choose">
                                         <IoIosImage />
@@ -150,7 +150,7 @@ const Main = () => {
                             {
                                 crop && <button onClick={imageCrop} className='crop'>Crop Image</button>
                             }
-                            <label htmlFor="choose">Photo editor</label>
+                            <label htmlFor="choose">Choose image</label>
                             <input onChange={imageHandle} type="file" id='choose' />
                         </div>
                     </div>
