@@ -18,6 +18,10 @@ const Main = () => {
             maxValue: 200
         },
         {
+            name: 'opacity',
+            maxValue: 100
+        },
+        {
             name: 'invert',
             maxValue: 100
         },
@@ -41,6 +45,7 @@ const Main = () => {
         saturation: 100,
         contrast: 100,
         invert: 0,
+        opacity: 100,
     })
     const inputHandle = (e) => {
         setState({
@@ -94,7 +99,7 @@ const Main = () => {
         canvas.width = details.naturalWidth
         canvas.height = details.naturalHeight
         const ctx = canvas.getContext('2d')
-        ctx.filter = `brightness(${state.brightness}%) sepia(${state.sepia}%) invert(${state.invert}%) saturate(${state.saturation}%) contrast(${state.contrast}%)`
+        ctx.filter = `brightness(${state.brightness}%) sepia(${state.sepia}%) opacity(${state.opacity}%) invert(${state.invert}%) saturate(${state.saturation}%) contrast(${state.contrast}%)`
         ctx.translate(canvas.width / 2, canvas.height / 2)
         ctx.scale(state.vartical, state.horizental)
         ctx.drawImage(
@@ -143,7 +148,7 @@ const Main = () => {
                         <div className="image">
                             {
                                 state.image ? <ReactCrop crop={crop} onChange={c => setCrop(c)}>
-                                    <img onLoad={(e) => setDetails(e.currentTarget)} style={{ filter: `brightness(${state.brightness}%) invert(${state.invert}%) sepia(${state.sepia}%) saturate(${state.saturation}%) contrast(${state.contrast}%)` }} src={state.image} alt="" />
+                                    <img onLoad={(e) => setDetails(e.currentTarget)} style={{ filter: `brightness(${state.brightness}%) opacity(${state.opacity}%) invert(${state.invert}%) sepia(${state.sepia}%) saturate(${state.saturation}%) contrast(${state.contrast}%)` }} src={state.image} alt="" />
                                 </ReactCrop> :
                                     <label htmlFor="choose">
                                         <IoIosImage />
