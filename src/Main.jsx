@@ -22,6 +22,10 @@ const Main = () => {
             maxValue: 100
         },
         {
+            name: 'blur',
+            maxValue: 15
+        },
+        {
             name: 'invert',
             maxValue: 100
         },
@@ -46,6 +50,7 @@ const Main = () => {
         contrast: 100,
         invert: 0,
         opacity: 100,
+        blur: 0,
     })
     const inputHandle = (e) => {
         setState({
@@ -55,9 +60,7 @@ const Main = () => {
     }
     const imageHandle = (e) => {
         if (e.target.files.length !== 0) {
-
             const reader = new FileReader()
-
             reader.onload = () => {
                 setState({
                     ...state,
@@ -74,7 +77,6 @@ const Main = () => {
         canvas.width = crop.width
         canvas.height = crop.height
         const ctx = canvas.getContext('2d')
-
         ctx.drawImage(
             details,
             crop.x * scaleX,
@@ -99,7 +101,7 @@ const Main = () => {
         canvas.width = details.naturalWidth
         canvas.height = details.naturalHeight
         const ctx = canvas.getContext('2d')
-        ctx.filter = `brightness(${state.brightness}%) sepia(${state.sepia}%) opacity(${state.opacity}%) invert(${state.invert}%) saturate(${state.saturation}%) contrast(${state.contrast}%)`
+        ctx.filter = `brightness(${state.brightness}%) sepia(${state.sepia}%) blur(${state.blur}px) opacity(${state.opacity}%) invert(${state.invert}%) saturate(${state.saturation}%) contrast(${state.contrast}%)`
         ctx.translate(canvas.width / 2, canvas.height / 2)
         ctx.scale(state.vartical, state.horizental)
         ctx.drawImage(
@@ -124,7 +126,7 @@ const Main = () => {
                     <div className="sidebar">
                         <div className="side_body">
                             <div className="filter_section">
-                                <span>Filters</span>
+                                <span>Tools</span>
                                 <div className="filter_key">
                                     {
                                         filterElement.map((v, i) => <button className={property.name === v.name ? 'active' : ''} onClick={() => setProperty(v)} key={i} >{v.name}</button>)
@@ -148,7 +150,7 @@ const Main = () => {
                         <div className="image">
                             {
                                 state.image ? <ReactCrop crop={crop} onChange={c => setCrop(c)}>
-                                    <img onLoad={(e) => setDetails(e.currentTarget)} style={{ filter: `brightness(${state.brightness}%) opacity(${state.opacity}%) invert(${state.invert}%) sepia(${state.sepia}%) saturate(${state.saturation}%) contrast(${state.contrast}%)` }} src={state.image} alt="" />
+                                    <img onLoad={(e) => setDetails(e.currentTarget)} style={{ filter: `brightness(${state.brightness}%) blur(${state.blur}px) opacity(${state.opacity}%) invert(${state.invert}%) sepia(${state.sepia}%) saturate(${state.saturation}%) contrast(${state.contrast}%)` }} src={state.image} alt="" />
                                 </ReactCrop> :
                                     <label htmlFor="choose">
                                         <IoIosImage />
