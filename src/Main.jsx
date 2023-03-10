@@ -10,13 +10,17 @@ const Main = () => {
             maxValue: 200
         },
         {
+            name: 'saturate',
+            maxValue: 200
+        },
+        {
             name: 'contrast',
             maxValue: 200
         },
         {
-            name: 'saturation',
-            maxValue: 200
-        },
+        name: 'sepia',
+        maxValue: 200
+        }
     ]
     const [property, setProperty] = useState(
         {
@@ -29,7 +33,8 @@ const Main = () => {
     const [state, setState] = useState({
         image: '',
         brightness: 100,
-        saturation: 100,
+        sepia: 0,
+        saturate: 100,
         contrast: 100,
     })
     const inputHandle = (e) => {
@@ -81,15 +86,16 @@ const Main = () => {
     }
     const saveImage = () => {
         const canvas = document.createElement('canvas')
-        canvas.width = details.width
-        canvas.height = details.height
+        canvas.width = details.naturalWidth
+        canvas.height = details.naturalHeight
         const ctx = canvas.getContext('2d')
-        ctx.filter = `brightness(${state.brightness}%) saturate(${state.saturation}%) contrast(${state.contrast}%)`
-        ctx.translate(canvas.width, canvas.height)
+        ctx.filter = `brightness(${state.brightness}%) sepia(${state.sepia}%) saturate(${state.saturate}%) contrast(${state.contrast}%)`
+        ctx.translate(canvas.width / 2, canvas.height / 2)
+        ctx.scale(state.vartical, state.horizental)
         ctx.drawImage(
             details,
-            -canvas.width,
-            -canvas.height,
+            -canvas.width / 2,
+            -canvas.height / 2,
             canvas.width,
             canvas.height
         )
@@ -102,13 +108,13 @@ const Main = () => {
         <div className='image_editor'>
             <div className="card">
                 <div className="card_header">
-                    <h2> Photo editor</h2>
+                    <h2>Photo editor</h2>
                 </div>
                 <div className="card_body">
                     <div className="sidebar">
                         <div className="side_body">
                             <div className="filter_section">
-                                <span>Tools</span>
+                                <span>Filters</span>
                                 <div className="filter_key">
                                     {
                                         filterElement.map((v, i) => <button className={property.name === v.name ? 'active' : ''} onClick={() => setProperty(v)} key={i} >{v.name}</button>)
@@ -132,7 +138,7 @@ const Main = () => {
                         <div className="image">
                             {
                                 state.image ? <ReactCrop crop={crop} onChange={c => setCrop(c)}>
-                                    <img onLoad={(e) => setDetails(e.currentTarget)} style={{ filter: `brightness(${state.brightness}%) saturate(${state.saturation}%) contrast(${state.contrast}%` }} src={state.image} alt="" />
+                                    <img onLoad={(e) => setDetails(e.currentTarget)} style={{ filter: `brightness(${state.brightness}%) sepia(${state.sepia}%) saturate(${state.saturate}%) contrast(${state.contrast}%)` }} src={state.image} alt="" />
                                 </ReactCrop> :
                                     <label htmlFor="choose">
                                         <IoIosImage />
@@ -144,7 +150,7 @@ const Main = () => {
                             {
                                 crop && <button onClick={imageCrop} className='crop'>Crop Image</button>
                             }
-                            <label htmlFor="choose">Choose Image</label>
+                            <label htmlFor="choose">Photo editor</label>
                             <input onChange={imageHandle} type="file" id='choose' />
                         </div>
                     </div>
