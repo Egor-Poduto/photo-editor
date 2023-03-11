@@ -4,7 +4,7 @@ import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 import {IoIosImage } from 'react-icons/io'
 const Main = () => {
-    const filterElement = [
+    const Tool = [
         {
             name: 'brightness',
             maxValue: 200
@@ -129,7 +129,7 @@ const Main = () => {
                                 <span>Tools</span>
                                 <div className="filter_key">
                                     {
-                                        filterElement.map((v, i) => <button className={property.name === v.name ? 'active' : ''} onClick={() => setProperty(v)} key={i} >{v.name}</button>)
+                                        Tool.map((v, i) => <button className={property.name === v.name ? 'active' : ''} onClick={() => setProperty(v)} key={i} >{v.name}</button>)
                                     }
                                 </div>
                             </div>
@@ -140,8 +140,7 @@ const Main = () => {
                                 <input name={property.name} onChange={inputHandle} value={state[property.name]} max={property.maxValue} type="range" />
                             </div>
                         </div>
-                        <div className="reset">
-                            <button>Reset</button>
+                        <div className="save">
                             <button onClick={saveImage} className='save'>Save Image</button>
                         </div>
                     </div>
