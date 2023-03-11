@@ -3,8 +3,10 @@ import './Main.scss'
 import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 import {IoIosImage } from 'react-icons/io'
+import { GrRotateLeft, GrRotateRight } from 'react-icons/gr'
+import { CgMergeVertical, CgMergeHorizontal } from 'react-icons/cg'
 const Main = () => {
-    const filterElement = [
+    const Tool = [
         {
             name: 'brightness',
             maxValue: 200
@@ -33,6 +35,10 @@ const Main = () => {
         name: 'sepia',
         maxValue: 200
         },
+        {
+            name: 'rotate',
+            maxValue: 360
+            },
     ]
     const [property, setProperty] = useState(
         {
@@ -51,6 +57,7 @@ const Main = () => {
         invert: 0,
         opacity: 100,
         blur: 0,
+        rotate: 0,
     })
     const inputHandle = (e) => {
         setState({
@@ -69,6 +76,12 @@ const Main = () => {
             }
             reader.readAsDataURL(e.target.files[0])
         }
+    }
+    const imageRotate = () => {
+        setState({
+            ...state,
+            rotate: 180 - state.rotate
+        })
     }
     const imageCrop = () => {
         const canvas = document.createElement('canvas')
@@ -103,6 +116,7 @@ const Main = () => {
         const ctx = canvas.getContext('2d')
         ctx.filter = `brightness(${state.brightness}%) sepia(${state.sepia}%) blur(${state.blur}px) opacity(${state.opacity}%) invert(${state.invert}%) saturate(${state.saturation}%) contrast(${state.contrast}%)`
         ctx.translate(canvas.width / 2, canvas.height / 2)
+        ctx.rotate(state.rotate * Math.PI / 180)
         ctx.scale(state.vartical, state.horizental)
         ctx.drawImage(
             details,
@@ -129,20 +143,18 @@ const Main = () => {
                                 <span>Tools</span>
                                 <div className="filter_key">
                                     {
-                                        filterElement.map((v, i) => <button className={property.name === v.name ? 'active' : ''} onClick={() => setProperty(v)} key={i} >{v.name}</button>)
+                                        Tool.map((v, i) => <button className={property.name === v.name ? 'active' : ''} onClick={() => setProperty(v)} key={i} >{v.name}</button>)
                                     }
                                 </div>
                             </div>
                             <div className="filter_slider">
                                 <div className="label_bar">
                                     <label htmlFor="range">Range</label>
-                                    <span>100%</span>
                                 </div>
                                 <input name={property.name} onChange={inputHandle} value={state[property.name]} max={property.maxValue} type="range" />
                             </div>
                         </div>
-                        <div className="reset">
-                            <button>Reset</button>
+                        <div className="save">
                             <button onClick={saveImage} className='save'>Save Image</button>
                         </div>
                     </div>
@@ -150,7 +162,7 @@ const Main = () => {
                         <div className="image">
                             {
                                 state.image ? <ReactCrop crop={crop} onChange={c => setCrop(c)}>
-                                    <img onLoad={(e) => setDetails(e.currentTarget)} style={{ filter: `brightness(${state.brightness}%) blur(${state.blur}px) opacity(${state.opacity}%) invert(${state.invert}%) sepia(${state.sepia}%) saturate(${state.saturation}%) contrast(${state.contrast}%)` }} src={state.image} alt="" />
+                                  <img onLoad={(e) => setDetails(e.currentTarget)} style={{ filter: `brightness(${state.brightness}%) sepia(${state.sepia}%) blur(${state.blur}px) opacity(${state.opacity}%) invert(${state.invert}%) saturate(${state.saturation}%) contrast(${state.contrast}%)`, transform: `rotate(${state.rotate}deg)` }} src={state.image} alt="" />
                                 </ReactCrop> :
                                     <label htmlFor="choose">
                                         <IoIosImage />
