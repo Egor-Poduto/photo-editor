@@ -3,8 +3,6 @@ import './Main.scss'
 import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 import {IoIosImage } from 'react-icons/io'
-import { GrRotateLeft, GrRotateRight } from 'react-icons/gr'
-import { CgMergeVertical, CgMergeHorizontal } from 'react-icons/cg'
 const Main = () => {
     const Tool = [          //установка максимальных значений для инструментов 
         {
