@@ -6,7 +6,7 @@ import {IoIosImage } from 'react-icons/io'
 import { GrRotateLeft, GrRotateRight } from 'react-icons/gr'
 import { CgMergeVertical, CgMergeHorizontal } from 'react-icons/cg'
 const Main = () => {
-    const Tool = [
+    const Tool = [          //установка максимальных значений для инструментов 
         {
             name: 'brightness',
             maxValue: 200
@@ -48,7 +48,7 @@ const Main = () => {
     )
     const [details, setDetails] = useState('')
     const [crop, setCrop] = useState('')
-    const [state, setState] = useState({
+    const [state, setState] = useState({            //установка стартовых значенй инстуменов
         image: '',
         brightness: 100,
         sepia: 0,
@@ -59,13 +59,13 @@ const Main = () => {
         blur: 0,
         rotate: 0,
     })
-    const inputHandle = (e) => {
+    const inputHandle = (e) => {        //ползунок
         setState({
             ...state,
             [e.target.name]: e.target.value
         })
     }
-    const imageHandle = (e) => {
+    const imageHandle = (e) => {                //ситывание изображения для дальнейшей работы с ним 
         if (e.target.files.length !== 0) {
             const reader = new FileReader()
             reader.onload = () => {
@@ -77,13 +77,7 @@ const Main = () => {
             reader.readAsDataURL(e.target.files[0])
         }
     }
-    const imageRotate = () => {
-        setState({
-            ...state,
-            rotate: 180 - state.rotate
-        })
-    }
-    const imageCrop = () => {
+    const imageCrop = () => {                   //обрезка изображение
         const canvas = document.createElement('canvas')
         const scaleX = details.naturalWidth / details.width
         const scaleY = details.naturalHeight / details.height
@@ -109,7 +103,7 @@ const Main = () => {
             image: base64Url
         })
     }
-    const saveImage = () => {
+    const saveImage = () => {                   //сохранение изображения с примененными фильтрами
         const canvas = document.createElement('canvas')
         canvas.width = details.naturalWidth
         canvas.height = details.naturalHeight
@@ -118,19 +112,13 @@ const Main = () => {
         ctx.translate(canvas.width / 2, canvas.height / 2)
         ctx.rotate(state.rotate * Math.PI / 180)
         ctx.scale(state.vartical, state.horizental)
-        ctx.drawImage(
-            details,
-            -canvas.width / 2,
-            -canvas.height / 2,
-            canvas.width,
-            canvas.height
-        )
+        ctx.drawImage(details,-canvas.width / 2,-canvas.height / 2,canvas.width,canvas.height)
         const link = document.createElement('a')
         link.download = 'image_edit.jpg'
         link.href = canvas.toDataURL()
         link.click()
     }
-    return (
+    return (                        //отрисовка страницы
         <div className='image_editor'>
             <div className="card">
                 <div className="card_header">
