@@ -63,18 +63,6 @@ const Main = () => {
             [e.target.name]: e.target.value
         })
     }
-    const imageHandle = (e) => {                //ситывание изображения для дальнейшей работы с ним 
-        if (e.target.files.length !== 0) {
-            const reader = new FileReader()
-            reader.onload = () => {
-                setState({
-                    ...state,
-                    image: reader.result
-                })
-            }
-            reader.readAsDataURL(e.target.files[0])
-        }
-    }
     const imageCrop = () => {                   //обрезка изображение
         const canvas = document.createElement('canvas')
         const scaleX = details.naturalWidth / details.width
@@ -115,6 +103,26 @@ const Main = () => {
         link.download = 'image_edit.jpg'
         link.href = canvas.toDataURL()
         link.click()
+    }
+    const imageHandle = (e) => {                //считывание изображения для дальнейшей работы с ним 
+        if (e.target.files.length !== 0) {
+            const reader = new FileReader()
+            reader.onload = () => {
+                setState({
+                    ...state,
+                    brightness: 100,
+                    sepia: 0,
+                    saturation: 100,
+                    contrast: 100,
+                    invert: 0,
+                    opacity: 100,
+                    blur: 0,
+                    rotate: 0,
+                    image: reader.result
+                })
+            }
+            reader.readAsDataURL(e.target.files[0])
+        }
     }
     return (                        //отрисовка страницы
         <div className='image_editor'>
